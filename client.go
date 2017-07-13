@@ -85,7 +85,7 @@ type SteamInfo struct {
 	InviteAllow string `json:"InviteAllow"`
 }
 
-func CreateAPI(key string) *API {
+func New(key string) *API {
 	base, err := url.Parse("https://pubgtracker.com/api/")
 	if err != nil {
 		panic(err)
@@ -100,14 +100,14 @@ func CreateAPI(key string) *API {
 func (a *API) NewRequest(endpoint string) *http.Request {
 	end, err := url.Parse(endpoint)
 	if err != nil {
-		panic(err)
+		log.Fatal(err)
 	}
 	urlStr := a.BaseURL.ResolveReference(end)
 
 	req, err := http.NewRequest("GET", urlStr.String(), nil)
 	if err != nil {
 		// Handle error
-		panic(err)
+		log.Fatal(err)
 	}
 
 	req.Header.Set("Accept", "application/json")

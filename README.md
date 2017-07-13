@@ -19,8 +19,12 @@ Create an account at https://pubgtracker.com/site-api and request an API Key.
 ## Usage
 
 ```
-client := pubg.CreateAPI("YOURAPIKEYHERE")
-info := client.GetPlayerByName("JohnDoe") // Returns JSON unfiltered for player "JohnDoe"
+client := pubg.New("YOURAPIKEYHERE")
+info := client.GetPlayer("JohnDoe") // Returns JSON unfiltered for player "JohnDoe"
+fmt.Printf("%+v\n", info)
+
+steaminfo := client.GetSteamInfo("12345678901234567") // Returns Steam information for user based on SteamId
+fmt.Printf("%+v\n", steaminfo)
 ```
 
 ## To-Do
