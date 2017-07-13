@@ -75,8 +75,18 @@ type Player struct {
 	} `json:"MatchHistory"`
 }
 
+type SteamInfo struct {
+	AccountID   string `json:"AccountId"`
+	Nickname    string `json:"Nickname"`
+	AvatarURL   string `json:"AvatarUrl"`
+	SteamID     string `json:"SteamId"`
+	SteamName   string `json:"SteamName"`
+	State       string `json:"State"`
+	InviteAllow string `json:"InviteAllow"`
+}
+
 func CreateAPI(key string) *API {
-	base, err := url.Parse("https://pubgtracker.com/api/profile/pc/")
+	base, err := url.Parse("https://pubgtracker.com/api/")
 	if err != nil {
 		panic(err)
 	}
@@ -127,12 +137,22 @@ func (a *API) Do(req *http.Request, i interface{}) {
 	}
 }
 
-// Returns unfiltered JSON object
-func (a *API) GetPlayerByName(uname string) *Player {
-	req := a.NewRequest(uname)
+func (a *API) GetPlayer(uname string) *Player {
+	endpoint := "profile/pc/" + uname
+	req := a.NewRequest(endpoint)
 
 	var player Player
 	a.Do(req, &player)
 
 	return &player
+}
+
+func (a *API) GetSteamInfo(sid string) *SteamInfo {
+	endpoint := "search?steamId=" + sid
+	req := a.NewRequest(endpoint)
+
+	var sinfo SteamInfo
+	a.Do(req, &sinfo)
+
+	return &sinfo
 }
