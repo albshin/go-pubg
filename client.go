@@ -130,7 +130,6 @@ func (a *API) Do(req *http.Request, i interface{}) {
 // Returns unfiltered JSON object
 func (a *API) GetPlayerByName(uname string) *Player {
 	req := a.NewRequest(uname)
-	a.NewRequest(uname)
 
 	var player Player
 	a.Do(req, &player)
