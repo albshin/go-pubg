@@ -3,7 +3,6 @@ package pubg
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -85,74 +84,79 @@ type SteamInfo struct {
 	InviteAllow string `json:"InviteAllow"`
 }
 
-func New(key string) *API {
+func New(key string) (*API, error) {
 	base, err := url.Parse("https://pubgtracker.com/api/")
 	if err != nil {
-		panic(err)
+		return &API{}, err
 	}
 
 	return &API{
 		APIKey:  key,
 		BaseURL: base,
-	}
+	}, nil
 }
 
-func (a *API) NewRequest(endpoint string) *http.Request {
+func (a *API) NewRequest(endpoint string) (*http.Request, error) {
 	end, err := url.Parse(endpoint)
 	if err != nil {
-		log.Fatal(err)
+		return &http.Request{}, err
 	}
 	urlStr := a.BaseURL.ResolveReference(end)
 
 	req, err := http.NewRequest("GET", urlStr.String(), nil)
 	if err != nil {
 		// Handle error
-		log.Fatal(err)
+		return req, err
 	}
 
 	req.Header.Set("Accept", "application/json")
 	req.Header.Add("trn-api-key", a.APIKey)
 
-	return req
+	return req, nil
 }
 
-func (a *API) Do(req *http.Request, i interface{}) {
+func (a *API) Do(req *http.Request, i interface{}) error {
 	client := &http.Client{}
 
 	resp, err := client.Do(req)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 	defer resp.Body.Close()
 
 	// Decode response
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal(err)
+		return err
 	}
 
-	err = json.Unmarshal(body, &i)
-	if err != nil {
-		log.Fatal(err)
-	}
+	return json.Unmarshal(body, &i)
 }
 
-func (a *API) GetPlayer(uname string) *Player {
+func (a *API) GetPlayer(uname string) (*Player, error) {
 	endpoint := "profile/pc/" + uname
-	req := a.NewRequest(endpoint)
+	req, err := a.NewRequest(endpoint)
+
+	if err != nil {
+		return &Player{}, err
+	}
 
 	var player Player
-	a.Do(req, &player)
+	err = a.Do(req, &player)
 
-	return &player
+	return &player, err
 }
 
-func (a *API) GetSteamInfo(sid string) *SteamInfo {
+func (a *API) GetSteamInfo(sid string) (*SteamInfo, error) {
 	endpoint := "search?steamId=" + sid
-	req := a.NewRequest(endpoint)
+	req, err := a.NewRequest(endpoint)
+
+	if err != nil {
+		return &SteamInfo{}, err
+	}
 
 	var sinfo SteamInfo
-	a.Do(req, &sinfo)
+	err = a.Do(req, &sinfo)
 
-	return &sinfo
+	return &sinfo, err
 }
