@@ -8,11 +8,13 @@ import (
 	"time"
 )
 
+// API holds configuration variables for accessing the API.
 type API struct {
 	APIKey  string
 	BaseURL *url.URL
 }
 
+// Player holds the information returned from the API.
 type Player struct {
 	PlatformID     int       `json:"platformId"`
 	AccountID      string    `json:"AccountId"`
@@ -74,6 +76,7 @@ type Player struct {
 	} `json:"MatchHistory"`
 }
 
+// SteamInfo holds information returned from GetSteamInfo.
 type SteamInfo struct {
 	AccountID   string `json:"AccountId"`
 	Nickname    string `json:"Nickname"`
@@ -84,6 +87,7 @@ type SteamInfo struct {
 	InviteAllow string `json:"InviteAllow"`
 }
 
+// New creates a new API client.
 func New(key string) (*API, error) {
 	base, err := url.Parse("https://pubgtracker.com/api/")
 	if err != nil {
@@ -96,6 +100,7 @@ func New(key string) (*API, error) {
 	}, nil
 }
 
+// NewRequest creates the GET request to access the API.
 func (a *API) NewRequest(endpoint string) (*http.Request, error) {
 	end, err := url.Parse(endpoint)
 	if err != nil {
@@ -115,8 +120,11 @@ func (a *API) NewRequest(endpoint string) (*http.Request, error) {
 	return req, nil
 }
 
+// Do sends out a request to the API and unmarshals the data.
 func (a *API) Do(req *http.Request, i interface{}) error {
-	client := &http.Client{}
+	client := &http.Client{
+		Timeout: 10 * time.Second,
+	}
 
 	resp, err := client.Do(req)
 	if err != nil {
@@ -133,6 +141,7 @@ func (a *API) Do(req *http.Request, i interface{}) error {
 	return json.Unmarshal(body, &i)
 }
 
+// GetPlayer returns a player's stats.
 func (a *API) GetPlayer(uname string) (*Player, error) {
 	endpoint := "profile/pc/" + uname
 	req, err := a.NewRequest(endpoint)
@@ -147,6 +156,7 @@ func (a *API) GetPlayer(uname string) (*Player, error) {
 	return &player, err
 }
 
+// GetSteamInfo retrieves a player's steam information.
 func (a *API) GetSteamInfo(sid string) (*SteamInfo, error) {
 	endpoint := "search?steamId=" + sid
 	req, err := a.NewRequest(endpoint)

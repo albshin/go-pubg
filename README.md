@@ -19,11 +19,20 @@ Create an account at https://pubgtracker.com/site-api and request an API Key.
 ## Usage
 
 ```
-client := pubg.New("YOURAPIKEYHERE")
-info, _ := client.GetPlayer("JohnDoe") // Returns JSON unfiltered for player "JohnDoe"
+client, err := pubg.New("YOURAPIKEYHERE")
+if err != nil {
+    log.Fatal(err)
+}
+info, err := client.GetPlayer("JohnDoe") // Returns JSON unfiltered for player "JohnDoe"
+if err != nil {
+    log.Fatal(err)
+}
 fmt.Printf("%+v\n", info)
 
-steaminfo, _ := client.GetSteamInfo("12345678901234567") // Returns Steam information for user based on SteamId
+steaminfo, err := client.GetSteamInfo("76561198396852397") // Returns Steam information for user based on SteamId
+if err != nil {
+    log.Fatal(err)
+}
 fmt.Printf("%+v\n", steaminfo)
 ```
 
