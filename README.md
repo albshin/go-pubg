@@ -19,7 +19,12 @@ Create an account at https://pubgtracker.com/site-api and request an API Key.
 ## Usage
 
 ```
-client := pubg.New("YOURAPIKEYHERE")
+client, err := pubg.New("YOURAPIKEYHERE")
+
+if err != nil {
+  log.Fatal(err)
+}
+
 info, _ := client.GetPlayer("JohnDoe") // Returns JSON unfiltered for player "JohnDoe"
 fmt.Printf("%+v\n", info)
 
