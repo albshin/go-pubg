@@ -55,24 +55,35 @@ type Player struct {
 		} `json:"Stats"`
 	} `json:"Stats"`
 	MatchHistory []struct {
-		Updated          string  `json:"Updated"`
-		UpdatedJS        string  `json:"UpdatedJS"`
-		Season           int     `json:"Season"`
-		SeasonDisplay    string  `json:"SeasonDisplay"`
-		Match            int     `json:"Match"`
-		MatchDisplay     string  `json:"MatchDisplay"`
-		Region           int     `json:"Region"`
-		RegionDisplay    string  `json:"RegionDisplay"`
-		Rounds           int     `json:"Rounds"`
-		Wins             int     `json:"Wins"`
-		Kills            int     `json:"Kills"`
-		Assists          int     `json:"Assists"`
-		Top10            int     `json:"Top10"`
-		Rating           float64 `json:"Rating"`
-		RatingChange     float64 `json:"RatingChange"`
-		RatingRank       int     `json:"RatingRank"`
-		RatingRankChange int     `json:"RatingRankChange"`
-		Kd               float64 `json:"Kd"`
+		Updated             	string  `json:"Updated"`
+		UpdatedJS           	string  `json:"UpdatedJS"`
+		Season              	int     `json:"Season"`
+		SeasonDisplay       	string  `json:"SeasonDisplay"`
+		Match               	int     `json:"Match"`
+		MatchDisplay        	string  `json:"MatchDisplay"`
+		Region              	int     `json:"Region"`
+		RegionDisplay       	string  `json:"RegionDisplay"`
+		Rounds              	int     `json:"Rounds"`
+		Wins                	int     `json:"Wins"`
+		Kills               	int     `json:"Kills"`
+		Assists             	int     `json:"Assists"`
+		Top10               	int     `json:"Top10"`
+		Rating              	float64 `json:"Rating"`
+		RatingChange        	float64 `json:"RatingChange"`
+		RatingRank          	int     `json:"RatingRank"`
+		RatingRankChange    	int     `json:"RatingRankChange"`
+		Kd                  	float64 `json:"Kd"`
+		Damage              	int     `json:"Damage"`
+		TimeSurvived        	float64 `json:"TimeSurvived"`
+		WinRating           	int     `json:"WinRating"`
+		WinRank             	int     `json:"WinRank"`
+		WinRatingChange     	int     `json:"WinRatingChange"`
+		WinRatingRankChange 	int     `json:"WinRatingRankChange"`
+		KillRating          	int     `json:"KillRating"`
+		KillRank            	int     `json:"KillRank"`
+		KillRatingChange    	int     `json:"KillRatingChange"`
+		KillRatingRankChange 	int     `json:"KillRatingRankChange"`
+		MoveDistance        	float64 `json:"MoveDistance"`
 	} `json:"MatchHistory"`
 }
 
