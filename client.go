@@ -55,6 +55,7 @@ type Player struct {
 		} `json:"Stats"`
 	} `json:"Stats"`
 	MatchHistory []struct {
+		Id			int	`json:"Id"`
 		Updated             	string  `json:"Updated"`
 		UpdatedJS           	string  `json:"UpdatedJS"`
 		Season              	int     `json:"Season"`
